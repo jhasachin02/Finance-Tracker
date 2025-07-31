@@ -1,4 +1,9 @@
 
+
+<p align="center">
+  <img src="public/FT.png" alt="Finance Tracker" width="300" />
+</p>
+
 # Finance Tracker
 
 **Live site:** [https://finance-track02.netlify.app/](https://finance-track02.netlify.app/)
