@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="public/FT.png" alt="Finance Tracker" width="300" />
+  <img src="public/FT.png" alt="Finance Tracker" width="100%" />
 </p>
 
 # Finance Tracker
