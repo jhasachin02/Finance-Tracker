@@ -25,6 +25,7 @@ ChartJS.register(
   Filler
 );
 
+
 export const IncomeExpenseChart: React.FC = () => {
   const { state } = useFinance();
 
@@ -33,17 +34,17 @@ export const IncomeExpenseChart: React.FC = () => {
   const startDate = subMonths(endDate, 5);
   const months = eachMonthOfInterval({ start: startDate, end: endDate });
 
+  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+  const white = '#fff';
+
   const monthlyData = months.map(month => {
     const monthStr = format(month, 'yyyy-MM');
-    
     const monthlyIncome = state.transactions
       .filter(t => t.type === 'income' && t.date.startsWith(monthStr))
       .reduce((sum, t) => sum + t.amount, 0);
-    
     const monthlyExpense = state.transactions
       .filter(t => t.type === 'expense' && t.date.startsWith(monthStr))
       .reduce((sum, t) => sum + t.amount, 0);
-
     return {
       month: format(month, 'MMM yyyy'),
       income: monthlyIncome,
@@ -57,26 +58,26 @@ export const IncomeExpenseChart: React.FC = () => {
       {
         label: 'Income',
         data: monthlyData.map(d => d.income),
-        borderColor: 'hsl(var(--finance-income))',
-        backgroundColor: 'hsl(var(--finance-income) / 0.1)',
+        borderColor: isDark ? white : 'hsl(var(--finance-income))',
+        backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'hsl(var(--finance-income) / 0.1)',
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: 'hsl(var(--finance-income))',
-        pointBorderColor: 'hsl(var(--finance-income))',
-        pointHoverBackgroundColor: 'hsl(var(--finance-income))',
-        pointHoverBorderColor: 'hsl(var(--finance-income))',
+        pointBackgroundColor: isDark ? white : 'hsl(var(--finance-income))',
+        pointBorderColor: isDark ? white : 'hsl(var(--finance-income))',
+        pointHoverBackgroundColor: isDark ? white : 'hsl(var(--finance-income))',
+        pointHoverBorderColor: isDark ? white : 'hsl(var(--finance-income))',
       },
       {
         label: 'Expense',
         data: monthlyData.map(d => d.expense),
-        borderColor: 'hsl(var(--finance-expense))',
-        backgroundColor: 'hsl(var(--finance-expense) / 0.1)',
+        borderColor: isDark ? white : 'hsl(var(--finance-expense))',
+        backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'hsl(var(--finance-expense) / 0.1)',
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: 'hsl(var(--finance-expense))',
-        pointBorderColor: 'hsl(var(--finance-expense))',
-        pointHoverBackgroundColor: 'hsl(var(--finance-expense))',
-        pointHoverBorderColor: 'hsl(var(--finance-expense))',
+        pointBackgroundColor: isDark ? white : 'hsl(var(--finance-expense))',
+        pointBorderColor: isDark ? white : 'hsl(var(--finance-expense))',
+        pointHoverBackgroundColor: isDark ? white : 'hsl(var(--finance-expense))',
+        pointHoverBorderColor: isDark ? white : 'hsl(var(--finance-expense))',
       },
     ],
   };
@@ -96,13 +97,14 @@ export const IncomeExpenseChart: React.FC = () => {
           font: {
             size: 12,
           },
+          color: isDark ? white : undefined,
         },
       },
       tooltip: {
-        backgroundColor: 'hsl(var(--card))',
-        titleColor: 'hsl(var(--card-foreground))',
-        bodyColor: 'hsl(var(--card-foreground))',
-        borderColor: 'hsl(var(--border))',
+        backgroundColor: isDark ? '#222' : 'hsl(var(--card))',
+        titleColor: isDark ? white : 'hsl(var(--card-foreground))',
+        bodyColor: isDark ? white : 'hsl(var(--card-foreground))',
+        borderColor: isDark ? white : 'hsl(var(--border))',
         borderWidth: 1,
         callbacks: {
           label: function(context: any) {
@@ -116,20 +118,20 @@ export const IncomeExpenseChart: React.FC = () => {
     scales: {
       x: {
         grid: {
-          color: 'hsl(var(--border))',
+          color: isDark ? 'rgba(255,255,255,0.2)' : 'hsl(var(--border))',
           drawBorder: false,
         },
         ticks: {
-          color: 'hsl(var(--muted-foreground))',
+          color: isDark ? white : 'hsl(var(--muted-foreground))',
         },
       },
       y: {
         grid: {
-          color: 'hsl(var(--border))',
+          color: isDark ? 'rgba(255,255,255,0.2)' : 'hsl(var(--border))',
           drawBorder: false,
         },
         ticks: {
-          color: 'hsl(var(--muted-foreground))',
+          color: isDark ? white : 'hsl(var(--muted-foreground))',
           callback: function(value: any) {
             return '₹' + value.toLocaleString('en-IN');
           },
@@ -139,7 +141,7 @@ export const IncomeExpenseChart: React.FC = () => {
   };
 
   return (
-    <div className="h-64">
+    <div className="h-32 xs:h-40 sm:h-56 md:h-64 w-full max-w-full min-w-0">
       <Line data={data} options={options} />
     </div>
   );

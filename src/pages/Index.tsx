@@ -1,4 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+// Theme toggle button component
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  return (
+    <button
+      aria-label="Toggle Dark Mode"
+      className="rounded-full p-2 border bg-card hover:bg-muted transition-colors"
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+    >
+      {theme === 'dark' ? (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+      )}
+    </button>
+  );
+};
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -32,30 +65,31 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark:bg-gray-950 transition-colors">
       {/* Header */}
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <Wallet className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">FinTracker</h1>
-                <p className="text-sm text-muted-foreground">Your Personal Finance Dashboard</p>
+                <h1 className="text-lg sm:text-2xl font-bold text-foreground leading-tight">Finance Tracker</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-tight">Your Personal Finance Dashboard</p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 w-full sm:w-auto justify-end">
+              <ThemeToggle />
               <Button
                 variant="default"
                 size="sm"
                 onClick={() => setActiveTab('add')}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Plus className="h-4 w-4" />
-                Add Transaction
+                <span className="hidden xs:inline">Add Transaction</span>
+                <span className="inline xs:hidden">Add</span>
               </Button>
             </div>
           </div>
@@ -63,9 +97,9 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5">
+      <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-1 sm:gap-0 lg:w-auto">
             <TabsTrigger value="dashboard" className="gap-2">
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
