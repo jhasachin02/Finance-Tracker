@@ -1,4 +1,7 @@
+
 # Finance Tracker
+
+**Live site:** [https://finance-track02.netlify.app/](https://finance-track02.netlify.app/)
 
 A modern, responsive personal finance dashboard to track your income, expenses, budgets, and reports. Built with React, Vite, and Tailwind CSS, it features voice input, smooth scrolling, and a beautiful dark mode.
 
